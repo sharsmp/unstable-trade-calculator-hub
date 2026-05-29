@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Unstable TD Trade Hub</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#07070b;
+--panel:#111118;
+--panel2:#181823;
+--border:#2a2a38;
+--text:#ffffff;
+--muted:#9ca3af;
+--accent:#7c4dff;
+--green:#00ff88;
+--red:#ff5c5c;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Inter,sans-serif;
+background:
+radial-gradient(circle at top,#141427 0%,#07070b 60%);
+color:white;
+min-height:100vh;
+overflow-x:hidden;
+}
+
+/* LOADING */
+
+#loading{
+position:fixed;
+inset:0;
+background:#050508;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:99999;
+flex-direction:column;
+gap:16px;
+animation:fadeOut 1s ease 2s forwards;
+}
+
+.loader{
+width:90px;
+height:90px;
+border-radius:50%;
+border:5px solid #2a2a38;
+border-top:5px solid #7c4dff;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+@keyframes fadeOut{
+to{
+opacity:0;
+visibility:hidden;
+}
+}
+
+/* HEADER */
+
+header{
+padding:24px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1px solid #1e1e2d;
+backdrop-filter:blur(10px);
+position:sticky;
+top:0;
+z-index:100;
+background:rgba(8,8,14,0.8);
+}
+
+.logo{
+font-size:26px;
+font-weight:800;
+letter-spacing:-1px;
+}
+
+.logo span{
+color:#7c4dff;
+}
+
+.top-actions{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+button,
+select,
+input{
+background:#181823;
+border:1px solid #2a2a38;
+color:white;
+padding:10px 14px;
+border-radius:12px;
+font-family:Inter;
+transition:.25s;
+}
+
+button{
+cursor:pointer;
+font-weight:600;
+}
+
+button:hover{
+transform:translateY(-2px);
+border-color:#7c4dff;
+box-shadow:0 0 20px rgba(124,77,255,0.25);
+}
+
+input{
+width:220px;
+}
+
+input:focus{
+outline:none;
+border-color:#7c4dff;
+}
+
+/* MAIN */
+
+.main{
+display:grid;
+grid-template-columns:1fr 380px;
+gap:20px;
+padding:20px;
+}
+
+/* PANELS */
+
+.panel{
+background:rgba(17,17,24,0.9);
+border:1px solid #232334;
+border-radius:24px;
+padding:18px;
+backdrop-filter:blur(10px);
+box-shadow:
+0 0 40px rgba(0,0,0,0.35),
+inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+
+/* TRADE AREA */
+
+.trade-wrapper{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+}
+
+.trade-panel h2{
+margin-bottom:14px;
+font-size:20px;
+}
+
+.trade-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+}
+
+.slot{
+height:110px;
+background:#181823;
+border:1px solid #29293a;
+border-radius:18px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+transition:.25s;
+position:relative;
+overflow:hidden;
+text-align:center;
+font-size:13px;
+font-weight:600;
+}
+
+.slot:hover{
+transform:translateY(-3px);
+border-color:#7c4dff;
+box-shadow:0 0 25px rgba(124,77,255,0.25);
+}
+
+.slot::before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(45deg,transparent,rgba(255,255,255,.05),transparent);
+transform:translateX(-100%);
+transition:0.5s;
+}
+
+.slot:hover::before{
+transform:translateX(100%);
+}
+
+/* RESULT */
+
+.result-panel{
+margin-top:18px;
+padding:18px;
+background:#181823;
+border-radius:18px;
+text-align:center;
+border:1px solid #29293a;
+}
+
+.result-value{
+font-size:24px;
+font-weight:800;
+margin-bottom:10px;
+}
+
+.result-status{
+font-size:16px;
+font-weight:700;
+}
+
+/* ITEM LIST */
+
+.sidebar{
+height:calc(100vh - 120px);
+overflow-y:auto;
+}
+
+.sidebar::-webkit-scrollbar{
+width:8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+background:#2a2a38;
+border-radius:999px;
+}
+
+.unit-list{
+display:flex;
+flex-direction:column;
+gap:10px;
+margin-top:15px;
+}
+
+.unit{
+background:#181823;
+border:1px solid #2a2a38;
+border-radius:18px;
+padding:14px;
+cursor:pointer;
+transition:.25s;
+position:relative;
+overflow:hidden;
+}
+
+.unit:hover{
+transform:translateY(-2px);
+border-color:#7c4dff;
+box-shadow:0 0 25px rgba(124,77,255,0.2);
+}
+
+.unit-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:8px;
+}
+
+.unit-name{
+font-weight:800;
+font-size:16px;
+}
+
+.unit-value{
+font-weight:700;
+color:#7c4dff;
+}
+
+.tags{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+margin-top:10px;
+}
+
+.tag{
+padding:5px 9px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+background:#242437;
+}
+
+.popular{
+background:#003d24;
+color:#00ff88;
+}
+
+.rising{
+background:#3a2a00;
+color:#ffd24d;
+}
+
+.passive{
+margin-top:12px;
+font-size:12px;
+color:#9ca3af;
+line-height:1.4;
+}
+
+/* RARITIES */
+
+.Common{border-color:#666;}
+.Legend{border-color:#4de1ff;}
+.Arcane{border-color:#b84dff;}
+.Mystic{border-color:#ff4df0;}
+.Enchanted{border-color:#ffd24d;}
+.Exclusive{border-color:#00ff88;}
+.Elusive{border-color:#ff9d4d;}
+.Transcendent{border-color:#ff4d4d;}
+
+/* FOOTER */
+
+footer{
+padding:20px;
+text-align:center;
+color:#888;
+font-size:13px;
+}
+
+/* MOBILE */
+
+@media(max-width:1100px){
+
+.main{
+grid-template-columns:1fr;
+}
+
+.sidebar{
+height:auto;
+}
+
+}
+
+@media(max-width:700px){
+
+.trade-wrapper{
+grid-template-columns:1fr;
+}
+
+header{
+flex-direction:column;
+gap:14px;
+align-items:flex-start;
+}
+
+.top-actions{
+width:100%;
+}
+
+input{
+width:100%;
+}
+
+.trade-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div id="loading">
+<div class="loader"></div>
+<h1>UNSTABLE TD TRADE HUB</h1>
+<p>Loading Values...</p>
+</div>
+
+<header>
+
+<div class="logo">
+💎 <span>Unstable TD</span> Trade Hub
+</div>
+
+<div class="top-actions">
+
+<input type="text" id="search" placeholder="Search unit...">
+
+<select id="sort">
+<option value="high">Highest Value</option>
+<option value="low">Lowest Value</option>
+<option value="stable">Stable</option>
+<option value="unstable">Unstable</option>
+</select>
+
+<button onclick="saveTrade()">Save Trade</button>
+<button onclick="loadTrade()">Load Trade</button>
+<button onclick="clearTrade()">Clear</button>
+
+</div>
+
+</header>
+
+<div class="main">
+
+<div>
+
+<div class="trade-wrapper">
+
+<div class="panel trade-panel">
+<h2>🟦 Your Trade</h2>
+<div class="trade-grid" id="you"></div>
+</div>
+
+<div class="panel trade-panel">
+<h2>🟥 Their Trade</h2>
+<div class="trade-grid" id="them"></div>
+</div>
+
+</div>
+
+<div class="panel result-panel">
+
+<div class="result-value" id="resultValue">
+0 VS 0
+</div>
+
+<div class="result-status" id="resultStatus">
+🤝 Fair Trade
+</div>
+
+</div>
+
+</div>
+
+<div class="panel sidebar">
+
+<h2>📊 Unit Database</h2>
+
+<div class="unit-list" id="unitList"></div>
+
+</div>
+
+</div>
+
+<footer>
+MADE BY SHAR
+</footer>
+
+<script>
+
+/* ==============================
+DATA
+============================== */
+
+const units = [
+
+{name:"Lawman",value:10,demand:"Stable",rarity:"Common",genre:"Basic",passive:"None"},
+{name:"Pirate",value:10,demand:"Stable",rarity:"Common",genre:"Basic",passive:"None"},
+{name:"Boosfer",value:20,demand:"Unstable",rarity:"Legend",genre:"Booster",passive:"Attacks while boosting"},
+{name:"Eggchan",value:25,demand:"Unstable",rarity:"Legend",genre:"Farm",passive:"None"},
+{name:"SpokeIsHere",value:150,demand:"Stable",rarity:"Arcane",genre:"Basic",passive:"Slows enemy when hit"},
+{name:"Mapicc",value:175,demand:"Unstable",rarity:"Arcane",genre:"Basic",passive:"None"},
+{name:"Wifies",value:400,demand:"Unstable",rarity:"Mystic",genre:"Booster",passive:"None"},
+{name:"TheoBaldTheBird",value:600,demand:"Unstable",rarity:"Mystic",genre:"Basic",passive:"None"},
+{name:"Manepear",value:4000,demand:"Unstable",rarity:"Enchanted",genre:"Basic",passive:"None"},
+{name:"ParrotX2",value:3000,demand:"Unstable",rarity:"Enchanted",genre:"Basic",passive:"None"},
+{name:"Wemmbu",value:6500,demand:"Stable",rarity:"Enchanted",genre:"Basic",passive:"None"},
+{name:"Flamefrags",value:9000,demand:"Stable",rarity:"Transcendent",genre:"Basic",passive:"None"},
+{name:"Wemblob",value:3000,demand:"Stable",rarity:"Exclusive",genre:"Basic",passive:"None"},
+{name:"Eggball",value:40500,demand:"Stable",rarity:"Exclusive",genre:"Basic",passive:"LIMITED"},
+{name:"LawSoldier",value:80,demand:"Unstable",rarity:"Exclusive",genre:"Basic",passive:"None"},
+{name:"Deputy_Ace",value:400,demand:"Unstable",rarity:"Exclusive",genre:"Basic",passive:"None"},
+{name:"Swight",value:1750,demand:"Unstable",rarity:"Exclusive",genre:"Basic",passive:"None"},
+{name:"Spepticle",value:200,demand:"Stable",rarity:"Exclusive",genre:"Booster",passive:"None"},
+{name:"Loppezz",value:125,demand:"Stable",rarity:"Exclusive",genre:"Farm",passive:"None"},
+{name:"Leow0ok",value:500,demand:"Stable",rarity:"Exclusive",genre:"Basic",passive:"None"},
+{name:"LettuceK",value:12750,demand:"Unstable",rarity:"Elusive",genre:"Summoner",passive:"None"},
+{name:"Director",value:50000,demand:"Rising",rarity:"Elusive",genre:"Farm/Booster",passive:"None"},
+{name:"Ashswagg",value:"Unknown",demand:"Unknown",rarity:"Exclusive",genre:"Unknown",passive:"COMING SOON"},
+{name:"Partybu",value:"Unknown",demand:"Unknown",rarity:"Exclusive",genre:"Unknown",passive:"COMING SOON"}
+
+];
+
+/* ==============================
+POPULAR SYSTEM
+============================== */
+
+let popular = JSON.parse(localStorage.getItem("popular") || "{}");
+
+/* ==============================
+CREATE SLOTS
+============================== */
+
+function createSlots(id){
+
+const grid = document.getElementById(id);
+
+for(let i=0;i<6;i++){
+
+const slot = document.createElement("div");
+
+slot.className = "slot";
+
+slot.innerHTML = "+";
+
+slot.onclick = ()=> selectSlot(slot);
+
+grid.appendChild(slot);
+
+}
+
+}
+
+createSlots("you");
+createSlots("them");
+
+/* ==============================
+SELECT SLOT
+============================== */
+
+let currentSlot = null;
+
+function selectSlot(slot){
+
+currentSlot = slot;
+
+document.querySelector(".sidebar").scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+/* ==============================
+RENDER UNITS
+============================== */
+
+const unitList = document.getElementById("unitList");
+
+function renderUnits(){
+
+const search = document.getElementById("search").value.toLowerCase();
+
+const sort = document.getElementById("sort").value;
+
+let data = [...units];
+
+if(sort === "high"){
+data.sort((a,b)=>(b.value||0)-(a.value||0));
+}
+
+if(sort === "low"){
+data.sort((a,b)=>(a.value||0)-(b.value||0));
+}
+
+if(sort === "stable"){
+data = data.filter(x=>x.demand==="Stable");
+}
+
+if(sort === "unstable"){
+data = data.filter(x=>x.demand==="Unstable");
+}
+
+data = data.filter(x=>
+x.name.toLowerCase().includes(search)
+);
+
+unitList.innerHTML = "";
+
+data.forEach(unit=>{
+
+const clicks = popular[unit.name] || 0;
+
+const card = document.createElement("div");
+
+card.className = `unit ${unit.rarity}`;
+
+card.innerHTML = `
+
+<div class="unit-top">
+
+<div class="unit-name">
+${unit.name}
+</div>
+
+<div class="unit-value">
+${unit.value}
+</div>
+
+</div>
+
+<div class="tags">
+
+<div class="tag">
+${unit.rarity}
+</div>
+
+<div class="tag">
+${unit.genre}
+</div>
+
+<div class="tag">
+${unit.demand}
+</div>
+
+${clicks > 5 ? `<div class="tag popular">🔥 Popular</div>` : ""}
+
+${unit.demand === "Rising" ? `<div class="tag rising">📈 Rising</div>` : ""}
+
+</div>
+
+<div class="passive">
+Passive: ${unit.passive}
+</div>
+
+`;
+
+card.onclick = ()=>{
+
+if(!currentSlot) return;
+
+popular[unit.name] = (popular[unit.name] || 0) + 1;
+
+localStorage.setItem("popular",JSON.stringify(popular));
+
+currentSlot.innerHTML = `
+<div>
+<b>${unit.name}</b><br>
+${unit.value}
+</div>
+`;
+
+currentSlot.dataset.value =
+typeof unit.value === "number"
+? unit.value
+: 0;
+
+updateTrade();
+
+renderUnits();
+
+};
+
+unitList.appendChild(card);
+
+});
+
+}
+
+renderUnits();
+
+/* ==============================
+TRADE CALC
+============================== */
+
+function getTotal(id){
+
+let total = 0;
+
+document.querySelectorAll(`#${id} .slot`)
+.forEach(slot=>{
+
+total += Number(slot.dataset.value || 0);
+
+});
+
+return total;
+
+}
+
+function updateTrade(){
+
+const you = getTotal("you");
+const them = getTotal("them");
+
+const diff = you - them;
+
+let status = "🤝 Fair Trade";
+
+if(diff > 0){
+status = `📈 You Overpay by ${diff}`;
+}
+
+if(diff < 0){
+status = `📉 Them Overpay by ${Math.abs(diff)}`;
+}
+
+let percent = them > 0
+? ((diff / them) * 100).toFixed(1)
+: 0;
+
+document.getElementById("resultValue").innerHTML =
+`${you.toLocaleString()} VS ${them.toLocaleString()}`;
+
+document.getElementById("resultStatus").innerHTML =
+`${status} (${percent}%)`;
+
+}
+
+/* ==============================
+SAVE SYSTEM
+============================== */
+
+function saveTrade(){
+
+const data = {
+
+you:document.getElementById("you").innerHTML,
+them:document.getElementById("them").innerHTML
+
+};
+
+localStorage.setItem("tradeSave",JSON.stringify(data));
+
+alert("Trade Saved!");
+
+}
+
+function loadTrade(){
+
+const data = JSON.parse(localStorage.getItem("tradeSave"));
+
+if(!data) return;
+
+document.getElementById("you").innerHTML = data.you;
+document.getElementById("them").innerHTML = data.them;
+
+rebindSlots("you");
+rebindSlots("them");
+
+updateTrade();
+
+}
+
+function rebindSlots(id){
+
+document.querySelectorAll(`#${id} .slot`)
+.forEach(slot=>{
+
+slot.onclick = ()=> selectSlot(slot);
+
+});
+
+}
+
+function clearTrade(){
+
+location.reload();
+
+}
+
+/* ==============================
+SEARCH + SORT
+============================== */
+
+document.getElementById("search")
+.addEventListener("input",renderUnits);
+
+document.getElementById("sort")
+.addEventListener("change",renderUnits);
+
+</script>
+
+</body>
+</html>

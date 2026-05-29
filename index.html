@@ -16,448 +16,204 @@
 --panel2:#181823;
 --border:#2a2a38;
 --text:#ffffff;
---muted:#9ca3af;
 --accent:#7c4dff;
---green:#00ff88;
---red:#ff5c5c;
 }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
 font-family:Inter,sans-serif;
-background:
-radial-gradient(circle at top,#141427 0%,#07070b 60%);
+background:radial-gradient(circle at top,#141427 0%,#07070b 60%);
 color:white;
 min-height:100vh;
-overflow-x:hidden;
-}
-
-/* LOADING */
-
-#loading{
-position:fixed;
-inset:0;
-background:#050508;
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:99999;
-flex-direction:column;
-gap:16px;
-animation:fadeOut 1s ease 2s forwards;
-}
-
-.loader{
-width:90px;
-height:90px;
-border-radius:50%;
-border:5px solid #2a2a38;
-border-top:5px solid #7c4dff;
-animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-100%{
-transform:rotate(360deg);
-}
-}
-
-@keyframes fadeOut{
-to{
-opacity:0;
-visibility:hidden;
-}
 }
 
 /* HEADER */
-
 header{
-padding:24px;
+padding:20px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-border-bottom:1px solid #1e1e2d;
-backdrop-filter:blur(10px);
+border-bottom:1px solid #222;
+background:rgba(10,10,18,0.8);
 position:sticky;
 top:0;
-z-index:100;
-background:rgba(8,8,14,0.8);
+z-index:10;
 }
 
-.logo{
-font-size:26px;
-font-weight:800;
-letter-spacing:-1px;
-}
+.logo{font-size:22px;font-weight:800;}
+.logo span{color:#7c4dff;}
 
-.logo span{
-color:#7c4dff;
-}
-
-.top-actions{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-}
-
-button,
-select,
-input{
+input,select,button{
 background:#181823;
 border:1px solid #2a2a38;
 color:white;
-padding:10px 14px;
-border-radius:12px;
-font-family:Inter;
-transition:.25s;
-}
-
-button{
-cursor:pointer;
-font-weight:600;
-}
-
-button:hover{
-transform:translateY(-2px);
-border-color:#7c4dff;
-box-shadow:0 0 20px rgba(124,77,255,0.25);
-}
-
-input{
-width:220px;
-}
-
-input:focus{
-outline:none;
-border-color:#7c4dff;
+padding:10px;
+border-radius:10px;
 }
 
 /* MAIN */
-
 .main{
 display:grid;
-grid-template-columns:1fr 380px;
-gap:20px;
-padding:20px;
+grid-template-columns:1fr 350px;
+gap:15px;
+padding:15px;
 }
-
-/* PANELS */
 
 .panel{
-background:rgba(17,17,24,0.9);
-border:1px solid #232334;
-border-radius:24px;
-padding:18px;
-backdrop-filter:blur(10px);
-box-shadow:
-0 0 40px rgba(0,0,0,0.35),
-inset 0 0 0 1px rgba(255,255,255,0.02);
+background:#111118;
+border:1px solid #2a2a38;
+border-radius:18px;
+padding:15px;
 }
 
-/* TRADE AREA */
-
-.trade-wrapper{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:18px;
-}
-
-.trade-panel h2{
-margin-bottom:14px;
-font-size:20px;
-}
-
-.trade-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px;
-}
-
+/* SLOT */
 .slot{
 height:110px;
 background:#181823;
-border:1px solid #29293a;
-border-radius:18px;
+border:1px solid #2a2a38;
+border-radius:15px;
 display:flex;
 align-items:center;
 justify-content:center;
 cursor:pointer;
-transition:.25s;
 position:relative;
-overflow:hidden;
-text-align:center;
-font-size:13px;
-font-weight:600;
+transition:.2s;
 }
 
 .slot:hover{
-transform:translateY(-3px);
+transform:scale(1.03);
 border-color:#7c4dff;
-box-shadow:0 0 25px rgba(124,77,255,0.25);
 }
 
-.slot::before{
-content:"";
+/* REMOVE HINT */
+.slot small{
 position:absolute;
-inset:0;
-background:linear-gradient(45deg,transparent,rgba(255,255,255,.05),transparent);
-transform:translateX(-100%);
-transition:0.5s;
+bottom:5px;
+font-size:10px;
+color:#888;
 }
 
-.slot:hover::before{
-transform:translateX(100%);
-}
-
-/* RESULT */
-
-.result-panel{
-margin-top:18px;
-padding:18px;
-background:#181823;
-border-radius:18px;
-text-align:center;
-border:1px solid #29293a;
-}
-
-.result-value{
-font-size:24px;
-font-weight:800;
-margin-bottom:10px;
-}
-
-.result-status{
-font-size:16px;
-font-weight:700;
-}
-
-/* ITEM LIST */
-
-.sidebar{
-height:calc(100vh - 120px);
-overflow-y:auto;
-}
-
-.sidebar::-webkit-scrollbar{
-width:8px;
-}
-
-.sidebar::-webkit-scrollbar-thumb{
-background:#2a2a38;
-border-radius:999px;
-}
-
-.unit-list{
-display:flex;
-flex-direction:column;
-gap:10px;
-margin-top:15px;
-}
-
+/* UNIT CARD */
 .unit{
+padding:10px;
+border-radius:12px;
 background:#181823;
 border:1px solid #2a2a38;
-border-radius:18px;
-padding:14px;
 cursor:pointer;
-transition:.25s;
-position:relative;
-overflow:hidden;
+transition:.2s;
+margin-bottom:8px;
 }
 
 .unit:hover{
 transform:translateY(-2px);
 border-color:#7c4dff;
-box-shadow:0 0 25px rgba(124,77,255,0.2);
+box-shadow:0 0 10px #7c4dff55;
 }
 
+/* ICON */
+.unit img{
+width:40px;
+height:40px;
+border-radius:8px;
+}
+
+/* FLEX UNIT */
 .unit-top{
 display:flex;
-justify-content:space-between;
+gap:10px;
 align-items:center;
-margin-bottom:8px;
 }
 
-.unit-name{
-font-weight:800;
-font-size:16px;
+/* TAGS */
+.tag{
+font-size:11px;
+padding:3px 8px;
+border-radius:999px;
+background:#222;
+margin-right:4px;
 }
 
-.unit-value{
-font-weight:700;
-color:#7c4dff;
-}
+/* ===================== */
+/* RARITY GLOW EFFECTS   */
+/* ===================== */
 
-.tags{
-display:flex;
-gap:6px;
-flex-wrap:wrap;
+.Common{box-shadow:0 0 5px #666;}
+.Legend{box-shadow:0 0 10px #4de1ff;}
+.Arcane{box-shadow:0 0 10px #b84dff;}
+.Mystic{box-shadow:0 0 15px #ff4df0;}
+.Enchanted{box-shadow:0 0 15px #ffd24d;}
+.Exclusive{box-shadow:0 0 15px #00ff88;}
+.Elusive{box-shadow:0 0 20px #ff9d4d;}
+.Transcendent{box-shadow:0 0 25px #ff4d4d;}
+
+/* RESULT BAR */
+.bar{
+width:100%;
+height:14px;
+background:#222;
+border-radius:999px;
+overflow:hidden;
 margin-top:10px;
 }
 
-.tag{
-padding:5px 9px;
-border-radius:999px;
-font-size:11px;
-font-weight:700;
-background:#242437;
+.bar-fill{
+height:100%;
+width:50%;
+background:linear-gradient(90deg,#00ff88,#ff5c5c);
+transition:.3s;
 }
-
-.popular{
-background:#003d24;
-color:#00ff88;
-}
-
-.rising{
-background:#3a2a00;
-color:#ffd24d;
-}
-
-.passive{
-margin-top:12px;
-font-size:12px;
-color:#9ca3af;
-line-height:1.4;
-}
-
-/* RARITIES */
-
-.Common{border-color:#666;}
-.Legend{border-color:#4de1ff;}
-.Arcane{border-color:#b84dff;}
-.Mystic{border-color:#ff4df0;}
-.Enchanted{border-color:#ffd24d;}
-.Exclusive{border-color:#00ff88;}
-.Elusive{border-color:#ff9d4d;}
-.Transcendent{border-color:#ff4d4d;}
 
 /* FOOTER */
-
 footer{
-padding:20px;
 text-align:center;
+padding:15px;
 color:#888;
-font-size:13px;
-}
-
-/* MOBILE */
-
-@media(max-width:1100px){
-
-.main{
-grid-template-columns:1fr;
-}
-
-.sidebar{
-height:auto;
-}
-
-}
-
-@media(max-width:700px){
-
-.trade-wrapper{
-grid-template-columns:1fr;
-}
-
-header{
-flex-direction:column;
-gap:14px;
-align-items:flex-start;
-}
-
-.top-actions{
-width:100%;
-}
-
-input{
-width:100%;
-}
-
-.trade-grid{
-grid-template-columns:repeat(2,1fr);
-}
-
+font-size:12px;
 }
 
 </style>
 </head>
+
 <body>
 
-<div id="loading">
-<div class="loader"></div>
-<h1>UNSTABLE TD TRADE HUB</h1>
-<p>Loading Values...</p>
-</div>
-
 <header>
+<div class="logo">💎 <span>Unstable TD</span> Trade Hub</div>
 
-<div class="logo">
-💎 <span>Unstable TD</span> Trade Hub
-</div>
-
-<div class="top-actions">
-
-<input type="text" id="search" placeholder="Search unit...">
-
+<div>
+<input id="search" placeholder="Search">
 <select id="sort">
-<option value="high">Highest Value</option>
-<option value="low">Lowest Value</option>
-<option value="stable">Stable</option>
-<option value="unstable">Unstable</option>
+<option value="high">High</option>
+<option value="low">Low</option>
 </select>
-
-<button onclick="saveTrade()">Save Trade</button>
-<button onclick="loadTrade()">Load Trade</button>
-<button onclick="clearTrade()">Clear</button>
-
 </div>
-
 </header>
 
 <div class="main">
 
-<div>
+<!-- TRADE -->
+<div class="panel">
 
-<div class="trade-wrapper">
+<h2>Your Trade</h2>
+<div id="you" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"></div>
 
-<div class="panel trade-panel">
-<h2>🟦 Your Trade</h2>
-<div class="trade-grid" id="you"></div>
+<h2>Their Trade</h2>
+<div id="them" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"></div>
+
+<!-- FAIRNESS BAR -->
+<div style="margin-top:15px;">
+<div id="resultText">Fair Trade</div>
+<div class="bar">
+<div class="bar-fill" id="bar"></div>
 </div>
-
-<div class="panel trade-panel">
-<h2>🟥 Their Trade</h2>
-<div class="trade-grid" id="them"></div>
-</div>
-
-</div>
-
-<div class="panel result-panel">
-
-<div class="result-value" id="resultValue">
-0 VS 0
-</div>
-
-<div class="result-status" id="resultStatus">
-🤝 Fair Trade
 </div>
 
 </div>
 
-</div>
-
-<div class="panel sidebar">
-
-<h2>📊 Unit Database</h2>
-
-<div class="unit-list" id="unitList"></div>
-
+<!-- SIDEBAR -->
+<div class="panel">
+<h3>Units</h3>
+<div id="list"></div>
 </div>
 
 </div>
@@ -468,315 +224,116 @@ MADE BY SHAR
 
 <script>
 
-/* ==============================
-DATA
-============================== */
+/* SOUND */
+const clickSound = new Audio("https://www.soundjay.com/buttons/sounds/button-16.mp3");
+const removeSound = new Audio("https://www.soundjay.com/buttons/sounds/button-21.mp3");
 
+/* DATA */
 const units = [
-
-{name:"Lawman",value:10,demand:"Stable",rarity:"Common",genre:"Basic",passive:"None"},
-{name:"Pirate",value:10,demand:"Stable",rarity:"Common",genre:"Basic",passive:"None"},
-{name:"Boosfer",value:20,demand:"Unstable",rarity:"Legend",genre:"Booster",passive:"Attacks while boosting"},
-{name:"Eggchan",value:25,demand:"Unstable",rarity:"Legend",genre:"Farm",passive:"None"},
-{name:"SpokeIsHere",value:150,demand:"Stable",rarity:"Arcane",genre:"Basic",passive:"Slows enemy when hit"},
-{name:"Mapicc",value:175,demand:"Unstable",rarity:"Arcane",genre:"Basic",passive:"None"},
-{name:"Wifies",value:400,demand:"Unstable",rarity:"Mystic",genre:"Booster",passive:"None"},
-{name:"TheoBaldTheBird",value:600,demand:"Unstable",rarity:"Mystic",genre:"Basic",passive:"None"},
-{name:"Manepear",value:4000,demand:"Unstable",rarity:"Enchanted",genre:"Basic",passive:"None"},
-{name:"ParrotX2",value:3000,demand:"Unstable",rarity:"Enchanted",genre:"Basic",passive:"None"},
-{name:"Wemmbu",value:6500,demand:"Stable",rarity:"Enchanted",genre:"Basic",passive:"None"},
-{name:"Flamefrags",value:9000,demand:"Stable",rarity:"Transcendent",genre:"Basic",passive:"None"},
-{name:"Wemblob",value:3000,demand:"Stable",rarity:"Exclusive",genre:"Basic",passive:"None"},
-{name:"Eggball",value:40500,demand:"Stable",rarity:"Exclusive",genre:"Basic",passive:"LIMITED"},
-{name:"LawSoldier",value:80,demand:"Unstable",rarity:"Exclusive",genre:"Basic",passive:"None"},
-{name:"Deputy_Ace",value:400,demand:"Unstable",rarity:"Exclusive",genre:"Basic",passive:"None"},
-{name:"Swight",value:1750,demand:"Unstable",rarity:"Exclusive",genre:"Basic",passive:"None"},
-{name:"Spepticle",value:200,demand:"Stable",rarity:"Exclusive",genre:"Booster",passive:"None"},
-{name:"Loppezz",value:125,demand:"Stable",rarity:"Exclusive",genre:"Farm",passive:"None"},
-{name:"Leow0ok",value:500,demand:"Stable",rarity:"Exclusive",genre:"Basic",passive:"None"},
-{name:"LettuceK",value:12750,demand:"Unstable",rarity:"Elusive",genre:"Summoner",passive:"None"},
-{name:"Director",value:50000,demand:"Rising",rarity:"Elusive",genre:"Farm/Booster",passive:"None"},
-{name:"Ashswagg",value:"Unknown",demand:"Unknown",rarity:"Exclusive",genre:"Unknown",passive:"COMING SOON"},
-{name:"Partybu",value:"Unknown",demand:"Unknown",rarity:"Exclusive",genre:"Unknown",passive:"COMING SOON"}
-
+{name:"Lawman",value:10,rarity:"Common",icon:"https://via.placeholder.com/40"},
+{name:"Pirate",value:10,rarity:"Common",icon:"https://via.placeholder.com/40"},
+{name:"Boosfer",value:20,rarity:"Legend",icon:"https://via.placeholder.com/40"},
+{name:"Spoke",value:150,rarity:"Arcane",icon:"https://via.placeholder.com/40"},
+{name:"Wifies",value:400,rarity:"Mystic",icon:"https://via.placeholder.com/40"},
+{name:"Director",value:50000,rarity:"Elusive",icon:"https://via.placeholder.com/40"}
 ];
 
-/* ==============================
-POPULAR SYSTEM
-============================== */
+let selectedSlot=null;
 
-let popular = JSON.parse(localStorage.getItem("popular") || "{}");
-
-/* ==============================
-CREATE SLOTS
-============================== */
-
-function createSlots(id){
-
-const grid = document.getElementById(id);
-
+/* CREATE SLOTS */
+function create(id){
 for(let i=0;i<6;i++){
+let d=document.createElement("div");
+d.className="slot";
+d.innerHTML="+<small>double click to remove</small>";
 
-const slot = document.createElement("div");
+d.onclick=()=>selectedSlot=d;
 
-slot.className = "slot";
-
-slot.innerHTML = "+";
-
-slot.onclick = ()=> selectSlot(slot);
-
-grid.appendChild(slot);
-
+/* REMOVE ITEM */
+d.ondblclick=()=>{
+if(d.dataset.value){
+removeSound.play();
+d.innerHTML="+<small>double click to remove</small>";
+d.dataset.value=0;
+update();
 }
+};
 
+document.getElementById(id).appendChild(d);
 }
-
-createSlots("you");
-createSlots("them");
-
-/* ==============================
-SELECT SLOT
-============================== */
-
-let currentSlot = null;
-
-function selectSlot(slot){
-
-currentSlot = slot;
-
-document.querySelector(".sidebar").scrollIntoView({
-behavior:"smooth"
-});
-
 }
+create("you");
+create("them");
 
-/* ==============================
-RENDER UNITS
-============================== */
+/* RENDER */
+const list=document.getElementById("list");
 
-const unitList = document.getElementById("unitList");
+function render(){
+list.innerHTML="";
+units.forEach(u=>{
+let d=document.createElement("div");
+d.className="unit "+u.rarity;
 
-function renderUnits(){
-
-const search = document.getElementById("search").value.toLowerCase();
-
-const sort = document.getElementById("sort").value;
-
-let data = [...units];
-
-if(sort === "high"){
-data.sort((a,b)=>(b.value||0)-(a.value||0));
-}
-
-if(sort === "low"){
-data.sort((a,b)=>(a.value||0)-(b.value||0));
-}
-
-if(sort === "stable"){
-data = data.filter(x=>x.demand==="Stable");
-}
-
-if(sort === "unstable"){
-data = data.filter(x=>x.demand==="Unstable");
-}
-
-data = data.filter(x=>
-x.name.toLowerCase().includes(search)
-);
-
-unitList.innerHTML = "";
-
-data.forEach(unit=>{
-
-const clicks = popular[unit.name] || 0;
-
-const card = document.createElement("div");
-
-card.className = `unit ${unit.rarity}`;
-
-card.innerHTML = `
-
+d.innerHTML=`
 <div class="unit-top">
-
-<div class="unit-name">
-${unit.name}
-</div>
-
-<div class="unit-value">
-${unit.value}
-</div>
-
-</div>
-
-<div class="tags">
-
-<div class="tag">
-${unit.rarity}
-</div>
-
-<div class="tag">
-${unit.genre}
-</div>
-
-<div class="tag">
-${unit.demand}
-</div>
-
-${clicks > 5 ? `<div class="tag popular">🔥 Popular</div>` : ""}
-
-${unit.demand === "Rising" ? `<div class="tag rising">📈 Rising</div>` : ""}
-
-</div>
-
-<div class="passive">
-Passive: ${unit.passive}
-</div>
-
-`;
-
-card.onclick = ()=>{
-
-if(!currentSlot) return;
-
-popular[unit.name] = (popular[unit.name] || 0) + 1;
-
-localStorage.setItem("popular",JSON.stringify(popular));
-
-currentSlot.innerHTML = `
+<img src="${u.icon}">
 <div>
-<b>${unit.name}</b><br>
-${unit.value}
+<b>${u.name}</b><br>
+<small>${u.value}</small>
+</div>
 </div>
 `;
 
-currentSlot.dataset.value =
-typeof unit.value === "number"
-? unit.value
-: 0;
+d.onclick=()=>{
+if(!selectedSlot)return;
+clickSound.play();
 
-updateTrade();
+selectedSlot.innerHTML=`
+<div>
+<img src="${u.icon}"><br>
+<b>${u.name}</b>
+</div>
+<small>double click to remove</small>
+`;
 
-renderUnits();
-
+selectedSlot.dataset.value=u.value;
+update();
 };
 
-unitList.appendChild(card);
-
+list.appendChild(d);
 });
-
 }
+render();
 
-renderUnits();
-
-/* ==============================
-TRADE CALC
-============================== */
-
-function getTotal(id){
-
-let total = 0;
-
-document.querySelectorAll(`#${id} .slot`)
-.forEach(slot=>{
-
-total += Number(slot.dataset.value || 0);
-
+/* CALC */
+function total(id){
+let sum=0;
+document.querySelectorAll(`#${id} .slot`).forEach(s=>{
+sum+=Number(s.dataset.value||0);
 });
-
-return total;
-
+return sum;
 }
 
-function updateTrade(){
+/* UPDATE TRADE + BAR */
+function update(){
+let a=total("you");
+let b=total("them");
 
-const you = getTotal("you");
-const them = getTotal("them");
+let diff=a-b;
+let percent=50+(diff/(b+1))*10;
+percent=Math.max(0,Math.min(100,percent));
 
-const diff = you - them;
+document.getElementById("bar").style.width=percent+"%";
 
-let status = "🤝 Fair Trade";
+let text="🤝 Fair Trade";
+if(percent>60)text="📈 You Win";
+if(percent<40)text="📉 You Lose";
 
-if(diff > 0){
-status = `📈 You Overpay by ${diff}`;
+document.getElementById("resultText").innerText=`${text} (${a} vs ${b})`;
 }
 
-if(diff < 0){
-status = `📉 Them Overpay by ${Math.abs(diff)}`;
-}
-
-let percent = them > 0
-? ((diff / them) * 100).toFixed(1)
-: 0;
-
-document.getElementById("resultValue").innerHTML =
-`${you.toLocaleString()} VS ${them.toLocaleString()}`;
-
-document.getElementById("resultStatus").innerHTML =
-`${status} (${percent}%)`;
-
-}
-
-/* ==============================
-SAVE SYSTEM
-============================== */
-
-function saveTrade(){
-
-const data = {
-
-you:document.getElementById("you").innerHTML,
-them:document.getElementById("them").innerHTML
-
-};
-
-localStorage.setItem("tradeSave",JSON.stringify(data));
-
-alert("Trade Saved!");
-
-}
-
-function loadTrade(){
-
-const data = JSON.parse(localStorage.getItem("tradeSave"));
-
-if(!data) return;
-
-document.getElementById("you").innerHTML = data.you;
-document.getElementById("them").innerHTML = data.them;
-
-rebindSlots("you");
-rebindSlots("them");
-
-updateTrade();
-
-}
-
-function rebindSlots(id){
-
-document.querySelectorAll(`#${id} .slot`)
-.forEach(slot=>{
-
-slot.onclick = ()=> selectSlot(slot);
-
-});
-
-}
-
-function clearTrade(){
-
-location.reload();
-
-}
-
-/* ==============================
-SEARCH + SORT
-============================== */
-
-document.getElementById("search")
-.addEventListener("input",renderUnits);
-
-document.getElementById("sort")
-.addEventListener("change",renderUnits);
+/* SEARCH */
+document.getElementById("search").oninput=render;
 
 </script>
 
